@@ -3,9 +3,16 @@ name: Close Pull Request
 # only trigger on pull request closed events
 on:
   pull_request:
-    types: [ closed ]
+    #types: [ closed ]
 
 jobs:
+  pr_opened:
+    # this job will only run if the PR has been merged
+    if: github.event.pull_request.opened == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo PR #${{ github.event.number }} has been opened
   merge_job:
     # this job will only run if the PR has been merged
     if: github.event.pull_request.merged == true
@@ -21,3 +28,10 @@ jobs:
     steps:
     - run: |
         echo PR #${{ github.event.number }} has been closed without being merged
+  pr_closed:
+    # this job will only run if the PR has been merged
+    if: github.event.pull_request.closed == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo PR #${{ github.event.number }} has been closed      
